@@ -11,6 +11,26 @@ plugins {
     id("org.ajoberstar.grgit")
 }
 
+gradle.rootProject {
+    apply(plugin = "org.moddedmc.wiki.toolkit")
+
+    (extensions.findByName("wiki") as? org.moddedmc.wiki.toolkit.WikiToolkitExtension)?.apply {
+        docs {
+            create("yet-another-config-lib") {
+                root = rootProject.file("docs/")
+            }
+        }
+
+        val resolvedWikiAccessToken = "WIKI_ACCESS_TOKEN".let {
+            System.getenv(it) ?: findProperty(it)?.toString()
+        }
+
+        if (!resolvedWikiAccessToken.isNullOrEmpty()) {
+            wikiAccessToken = resolvedWikiAccessToken
+        }
+    } ?: println("Warning: `wiki` extension is not available in the root project.")
+}
+
 val loader = loom.platform.get().name.lowercase()
 val isFabric = loader == "fabric"
 val isNeoforge = loader == "neoforge"
@@ -235,11 +255,13 @@ publishMods {
             ?.readText()
             ?: "No changelog provided."
     )
-    type.set(when {
-        isAlpha -> ALPHA
-        isBeta -> BETA
-        else -> STABLE
-    })
+    type.set(
+        when {
+            isAlpha -> ALPHA
+            isBeta -> BETA
+            else -> STABLE
+        }
+    )
     modLoaders.add(loader)
 
     fun versionList(prop: String) = findProperty(prop)?.toString()
@@ -323,5 +345,5 @@ fun <T> optionalProp(property: String, block: (String) -> T?): T? =
     findProperty(property)?.toString()?.takeUnless { it.isBlank() }?.let(block)
 
 fun isPropDefined(property: String): Boolean {
-    return property(property)?.toString()?.isNotBlank() ?: false
+    return property(property)?.toString()?.isNotBlank() == true
 }

@@ -189,6 +189,11 @@ java {
 }
 
 tasks {
+    val javadocJar by creating(Jar::class) {
+        archiveClassifier.set("javadoc")
+        from(tasks.javadoc.get().destinationDir)
+    }
+
     processResources {
         val props = buildMap {
             put("id", findProperty("modId"))
@@ -313,6 +318,7 @@ publishing {
             artifactId = "yet-another-config-lib"
 
             from(components["java"])
+            artifact(tasks.named("javadocJar").get())
         }
     }
 

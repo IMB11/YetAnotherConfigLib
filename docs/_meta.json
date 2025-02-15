@@ -1,5 +1,18 @@
 {
-    "getting_started": "Getting Started",
-    "autogen.mdx": "Automatic Screen Generation",
-    "migrating": "Migration Guides"
+    "getting_started": {
+        "name": "Getting Started",
+        "icon": "LayoutPanelLeft"
+    },
+    "autogen.mdx": {
+        "name": "Automatic GUI Generation",
+        "icon": "Network"
+    },  
+    "manual": {
+        "name": "Manual GUI Generation",
+        "icon": "BrickWall"
+    },
+    "migrating": {
+        "name": "Migration Guides",
+        "icon": "Upload"
+    }
 }

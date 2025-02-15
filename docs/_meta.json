@@ -11,6 +11,10 @@
         "name": "Manual GUI Generation",
         "icon": "BrickWall"
     },
+    "viewing-config.mdx": {
+        "name": "Viewing the GUI",
+        "icon": "View"
+    },
     "migrating": {
         "name": "Migration Guides",
         "icon": "Upload"

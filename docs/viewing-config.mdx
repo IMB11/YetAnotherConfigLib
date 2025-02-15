@@ -1,0 +1,94 @@
+---
+title: Viewing The GUI
+hide_meta: true
+---
+
+Once you've created your GUI using either the [Automatic Generation](./autogen) or [Manual Generation](./manual/basics) methods of creating a configuration screen, you can register it with Mod Menu if you're on Fabric, or the actual mod loader if you're on NeoForge or LexForge.
+
+## Fabric
+
+First of all, you'll need to [depend on Mod Menu](https://github.com/TerraformersMC/ModMenu#java-api) in your `build.gradle` file.
+
+Next, create a class that implements `ModMenuApi` like so; you'll want to override the `getModConfigScreenFactory` method.
+
+<CodeTabs>
+
+```java !!tabs Manual Generation
+public class ModMenuIntegration implements ModMenuApi {
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return parentScreen -> YourConfigClass.generateScreen(parentScreen);
+    }
+}
+```
+
+```java !!tabs Automatic Generation
+public class ModMenuIntegration implements ModMenuApi {
+    @Override
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
+        return parentScreen -> YourConfigClass.HANDLER.generateGui().generateScreen(parentScreen);
+    }
+}
+```
+
+</CodeTabs>
+
+Next, you'll need to register this as an entrypoint in your `fabric.mod.json` file:
+
+```json
+"entrypoints": {
+    "modmenu": [
+        "com.mymod.config.package.path.to.ModMenuIntegration"
+    ]
+}
+```
+
+After this, you should be able to access the configuration screen via the Mod Menu screen.
+
+## NeoForge/LexForge
+
+NeoForge and LexForge are very similar when registering the configuration screen.
+
+<CodeTabs>
+
+```java !!tabs NeoForge (>=1.20.6)
+@Mod("my_mod_id")
+public class MyMod {
+    public MyMod() {
+        ModLoadingContext.get().registerExtensionPoint(
+                IConfigScreenFactory.class,
+                () -> (client, parent) -> {
+                    // Automatic Generation
+                    return YourConfigClass.HANDLER.generateGui().generateScreen(parentScreen);
+
+                    // Manual Generation
+                    return YourConfigClass.generateScreen(parentScreen);
+                }
+        )
+    }
+}
+```
+
+```java !!tabs NeoForge (<1.20.6) and LexForge
+@Mod("my_mod_id")
+public class MyMod {
+    public MyMod() {
+        ModLoadingContext.get().registerExtensionPoint(
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory(
+                        (client, parent) -> {
+                            // Automatic Generation
+                            return YourConfigClass.HANDLER.generateGui().generateScreen(parentScreen);
+
+                            // Manual Generation
+                            return YourConfigClass.generateScreen(parentScreen);
+                        }
+                )
+        )
+    }
+}
+```
+
+</CodeTabs>
+
+After this, you should be able to access the configuration screen by selecting your mod in the mods list screen and clicking the "Options" button.

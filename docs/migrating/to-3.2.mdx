@@ -29,11 +29,9 @@ The new `@SerialEntry` annotation has the benefit of comments, which are availab
 
 An example of a configuration in both GsonConfigInstance and ConfigHandler systems:
 
-<details>
+<CodeTabs>
 
-    <summary>GsonConfigInstance</summary>
-    
-```java 
+```java !!tabs GsonConfigInstance
 private static final Path CONFIG_FILE_PATH = ...;
 
 private static final GsonConfigInstance<MyConfig> GSON = GsonConfigInstance.createBuilder(MyConfig.class)
@@ -47,13 +45,7 @@ private static final GsonConfigInstance<MyConfig> GSON = GsonConfigInstance.crea
     .build();
 ```
 
-</details>
-
-<details>
-
-    <summary>ConfigHandler</summary>
-
-```java
+```java !!tabs ConfigHandler
 private static final Path CONFIG_FILE_PATH = ...;
 
 private static final ConfigHandler<MyConfig> HANDLER = ConfigClassHandler
@@ -73,7 +65,7 @@ private static final ConfigHandler<MyConfig> HANDLER = ConfigClassHandler
                 })
                 .build();
 ```
-    
-</details>
+
+</CodeTabs>
 
 You should refer to [Creating a Configuration Class](../getting-started/creating) for more detail on ConfigHandlers.

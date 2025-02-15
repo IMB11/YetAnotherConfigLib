@@ -1,7 +1,6 @@
 {
   "id": "yet-another-config-lib",
   "platforms": {
-    "curseforge": "yacl",
     "modrinth": "yacl"
   }
 }

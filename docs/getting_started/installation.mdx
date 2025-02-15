@@ -13,7 +13,9 @@ hide_meta: true
 
 Firstly, you'll need to add the maven repository to your `build.gradle` file:
 
-```groovy [Groovy DSL (build.gradle)]
+<CodeTabs>
+
+```groovy !!tabs Groovy DSL (build.gradle)
 repositories {
     maven {
         name "Xander's Maven"
@@ -22,20 +24,28 @@ repositories {
 }
 ```
 
-```kotlin [Kotlin DSL (build.gradle.kts)]
+```kotlin !!tabs Kotlin DSL (build.gradle.kts)
 repositories {
     maven("https://maven.isxander.dev/releases") {
         name = "Xander's Maven"
     }
 }
 ```
-:::
 
-| Minecraft Version  | YACL Version          |
-| ------------------ | --------------------- |
-| `1.20.4`, `1.20.3` | `3.3.1+1.20.4`        |
-| `1.20.2`           | `3.3.0-beta.1+1.20.2` |
-| `1.20.1`, `1.20`   | `3.2.1+1.20`          |
+</CodeTabs>
+
+| Minecraft Version  | Mod Loader                 | YACL version            |
+| ------------------ | -------------------------- | ----------------------- |
+| `1.21.2`, `1.21.3` | Fabric                     | `3.6.1+1.21.2-fabric`   |
+| `1.21.2`, `1.21.3` | NeoForge                   | `3.6.1+1.21.2-neoforge` |
+| `1.21`,`1.21.1`    | Fabric                     | `3.6.1+1.21-fabric`     |
+| `1.21`, `1.21.1`   | NeoForge                   | `3.6.1+1.21-neoforge`   |
+| `1.20.6`           | Fabric                     | `3.6.1+1.20.6-fabric`   |
+| `1.20.6`           | NeoForge                   | `3.6.1+1.20.6-neoforge` |
+| `1.20.4`           | Fabric                     | `3.6.1+1.20.4-fabric`   |
+| `1.20.4`           | NeoForge                   | `3.6.1+1.20.4-neoforge` |
+| `1.20.1`           | Fabric                     | `3.6.1+1.20.1-fabric`   |
+| `1.20.1`           | Minecraft Forge (LexForge) | `3.6.1+1.20.1-forge`    |
 
 Place the version of YACL you want to use in your `gradle.properties` file:
 
@@ -43,45 +53,54 @@ Place the version of YACL you want to use in your `gradle.properties` file:
 yacl_version=...
 ```
 
-This next part will differ, depending on whether you're using NeoForge or Fabric.
+This next part will differ, depending on whether you're using Forge, NeoForge or Fabric.
 
 You'll need to add the following dependency to your `build.gradle` file:
 
-::: code-group
-```groovy [NeoForge]
+<CodeTabs>
+
+```groovy !!tabs Fabric Loom
 dependencies {
-    compileOnly fg.deobf("dev.isxander.yacl:yet-another-config-lib-forge:${project.yacl_version}")
+    modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 }
 ```
 
-```groovy [Fabric]
+```groovy !!tabs ForgeGradle
 dependencies {
-    modImplementation "dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}"
+    compileOnly fg.deobf("dev.isxander:yet-another-config-lib:${project.yacl_version}")
 }
 ```
-:::
+
+</CodeTabs>
 
 ## Marking YACL as a dependency
 
-You'll need to tell your users that your mod depends on YACL, you can do this by adding the following to your mod's `fabric.mod.json` or `mods.toml` file:
+You'll need to tell your users that your mod depends on YACL, you can do this by adding the following to your mod's `fabric.mod.json`, `mods.toml` or `neoforge.mods.toml`
 
-::: warning
-Make sure to replace `{YACL_VERSION_HERE}` with the version of YACL you're using!
-:::
+<CodeTabs>
 
-::: code-group
-```json [fabric.mod.json]
-{
-    "depends": {
-        "yacl": ">={YACL_VERSION_HERE}"
-    }
+```json !!tabs fabric.mod.json (Fabric)
+"depends": {
+  "yet_another_config_lib_v3": ">=YACL_VERSION_HERE"
 }
 ```
 
-```toml [mods.toml]
-[dependencies.yacl]
-  modId="yet_another_config_lib_v3"
-  versionRange = "[{YACL_VERSION_HERE},)"
-  mandatory = true
+```toml !!tabs neoforge.mods.toml (NeoForge)
+[[dependencies.your_mod_id]]
+modId = "yet_another_config_lib_v3"
+mandatory = true
+versionRange = "[YACL_VERSION_HERE,)"
+ordering = "NONE"
+side = "CLIENT"
 ```
-:::
+
+```toml !!tabs mods.toml (LexForge)
+[[dependencies.your_mod_id]]
+modId = "yet_another_config_lib_v3"
+mandatory = true
+versionRange = "[YACL_VERSION_HERE,)"
+ordering = "NONE"
+side = "CLIENT"
+```
+
+</CodeTabs>

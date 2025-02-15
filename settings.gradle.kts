@@ -29,9 +29,9 @@ extensions.configure<StonecutterSettings> {
         }
 
         // Set this to true to speed up build times when you're working on the documentation.
-        val isDocumentationMode = true
+        val IS_DOCUMENTATION_MODE = true;
 
-        if (isDocumentationMode) {
+        if (IS_DOCUMENTATION_MODE) {
             mc("1.21.4", loaders = listOf("fabric"))
         } else {
             mc("1.21.4", loaders = listOf("fabric", "neoforge"))
